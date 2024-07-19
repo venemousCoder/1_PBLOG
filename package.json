@@ -1,0 +1,37 @@
+{
+  "name": "pblog",
+  "version": "1.0.0",
+  "description": "NO: 1/20 personal blog web application",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/venemousCoder/p_blog.git"
+  },
+  "author": "Ahmad Dalha (venemousCoder)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/venemousCoder/p_blog/issues"
+  },
+  "homepage": "https://github.com/venemousCoder/p_blog#readme",
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "express-sessions": "^1.0.6",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.4"
+  }
+}
