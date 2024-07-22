@@ -25,9 +25,11 @@ mongoose.connect(process.env.MONGO_DB_URL)
 
 // Middleware Connections
 // app.use(sessionSetter);
+
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+<<<<<<< HEAD
 
 app.use((req, res, next)=>{
     req.user
@@ -35,6 +37,11 @@ app.use((req, res, next)=>{
     next()
 })
 
+=======
+app.use((req, res, next) => {
+    console.log("URL_PATH:", req.url);
+})
+>>>>>>> 0129d55a0a10eef67aa076ef8bea3c564e2dcb72
 // Routes
 app.use('/', router);
 
