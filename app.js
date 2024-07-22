@@ -29,6 +29,12 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use((req, res, next)=>{
+    req.user
+    console.log('REQ_URL:', req.url, 'USER:', req.user)
+    next()
+})
+
 // Routes
 app.use('/', router);
 

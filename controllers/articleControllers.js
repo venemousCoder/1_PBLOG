@@ -7,25 +7,22 @@ function createArticle(req, res) {
         title: req.body.title,
         content: req.body.content,
         tags: req.body.tags,
-        publisheDate: Date.now()
     }
     console.log(newArticle)
     articles.create(newArticle)
         .then((article) => {
             response.createdArticle = article;
             response.msg = 'Article created successfully';
-         res.status(200)
-         res.json(response);
-         return;
+            res.status(200)
+            res.json(response);
+            return;
 
         }).catch((err) => {
 
             response.statusCode = 500;
             response.error = err;
             response.msg = 'Article not created'
-             res.status(500)
-            res.json(response);
-            return;
+            return res.status(500).json(response);
 
         });
 }
@@ -50,23 +47,27 @@ function updateArticle(req, res) {
 }
 
 function findArticle(req, res) {
-    const title = req.body.title;
-    const tag = req.body.tags.map((tag) => {
-        return new RegExp(tag, 'i');
-    });
+    let title = req.body.title;
+    let tag = req.body.tags;
+    console.log(tag)
     let page = req.query.page || 0;
     let articlesPerPage = req.query.app || 3;
+
     if (tag) {
+        let tag = req.body.tags.map((tag) => {
+            return new RegExp(tag, 'i');
+        });
         //
         articles.aggregate([{ $match: { tags: { $in: tag } } }]).skip(page * articlesPerPage).limit(parseInt(articlesPerPage))
             .then((searchResults) => {
-                console.log('test', searchResults);
-                return res.status(200).json({ msg: `search result for "${title || tag}"`, results: searchResults });
+                return res.status(200).json({ msg: `search result for "${tag}"`, results: searchResults });
             }).catch((err) => {
                 return res.status(500).json({ error: err, msg: 'could not search for article' });
             });
-    } else if (title) {
-        articles.find({ title: title })
+    }
+    if (title) {
+        let title = new RegExp(req.body.title, 'i');
+        articles.aggregate([{ $match: { title: title } }]).skip(page * articlesPerPage).limit(parseInt(articlesPerPage))
             .then((searchResults) => {
                 return res.status(200).json({ msg: `search result for "${title}"`, results: searchResults });
             })
@@ -75,8 +76,8 @@ function findArticle(req, res) {
             })
 
     }
-    else {
-        articles.find().sort({ createdAt: -1 })
+    if (!title && !tag) {
+        articles.find().sort({ createdAt: -1 }).skip(page * articlesPerPage).limit(parseInt(articlesPerPage))
             .then((searchResults) => {
                 return res.status(200).json({ msg: `All articles`, results: searchResults });
             }).catch((err) => {
